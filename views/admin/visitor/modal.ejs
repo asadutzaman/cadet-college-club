@@ -1,0 +1,333 @@
+<style type="text/css">
+	.modal-fullscreen {
+		width: 90%;
+		/*height: 100%;*/
+		margin: auto;
+		top: 30px !important;
+		left: 0;
+	}
+
+	.cursor-pointer {
+		cursor: pointer;
+	}
+
+	.form-control {
+		margin: 3px 0px !important;
+	}
+
+	.thumbnail {
+		display: block;
+		height: 110px;
+		border: 1px solid #ddd;
+		-webkit-transition: border 0.2s ease-in-out;
+		-o-transition: border 0.2s ease-in-out;
+		transition: border 0.2s ease-in-out;
+	}
+
+	.inline-flex {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.pt-10 {
+		padding-top: 10px;
+	}
+
+	input[type="checkbox"] {
+		accent-color: #0689bd;
+		;
+		height: 20px;
+		width: 20px;
+		margin-top: -3px;
+	}
+</style>
+
+<form method="post" id="add_visitor_form" enctype="multipart/form-data" autocomplete="off">
+	<div class="modal fade" id="add_visitor_modal">
+		<div class="modal-dialog modal-lg modal-fullscreen">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title"><i style="color: #3c8dbc" class="glyphicon glyphicon-user"></i> Visitor Registrar</h4>
+				</div>
+				<div class="modal-body" style="padding: 1px">
+
+					<section class="content">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="col-md-7">
+									<div class="box-body" style="padding: 4px;">
+										<div class="form-group">
+											<label for="inputPassword3" class="col-sm-3 control-label pt-10">Visitor
+												Type</label>
+											<div class="inline-flex">
+												<input class="visitor_type" checked="true"
+													style="width: 20px;height: 20px;" name="visitor_type" value="Member"
+													type="radio">
+												<label for="inputPassword3"
+													class="col-sm-1 control-label pt-10">Member</label>
+											</div>
+											<div class="inline-flex">
+												<input class="visitor_type"
+													style="width: 20px;height: 20px;" name="visitor_type" value="Family"
+													type="radio">
+												<label for="inputPassword3"
+													class="col-sm-1 control-label pt-10">Family</label>
+											</div>
+											<div class="inline-flex">
+												<input class="visitor_type" style="width: 20px;height: 20px;"
+													name="visitor_type" value="Affiliated" type="radio">
+												<label for="inputPassword3"
+													class="col-sm-1 control-label pt-10">Affiliated</label>
+											</div>
+											<div class="inline-flex">
+												<input class="visitor_type" style="width: 20px;height: 20px;"
+													name="visitor_type" value="Guest" type="radio">
+												<label for="inputPassword3"
+													class="col-sm-1 control-label pt-10">Guest</label>
+											</div>
+											<div class="inline-flex">
+												<input class="visitor_type" style="width: 20px;height: 20px;"
+													name="visitor_type" value="Others" type="radio">
+												<label for="inputPassword3"
+													class="col-sm-1 control-label pt-10">Others</label>
+											</div>
+										</div>
+
+										<!-- fields starts for 'Others' visitor category -->
+										<div class="form-group" id="mobile">
+											<label for="inputPassword3" class="col-sm-3 control-label pt-10">Mobile</label>
+											<div class="col-sm-9">
+												<input type="text" class="form-control" name="mobile"
+													id="other_mbl" maxlength="11" placeholder="Enter your mobile no">
+											</div>
+										</div>
+
+										<div class="form-group" id="other_name">
+											<label for="inputPassword3" class="col-sm-3 control-label pt-10">Name</label>
+											<div class="col-sm-9">
+												<input type="text" class="form-control" id="other_nm" name="other_name" placeholder="Enter your name">
+											</div>
+										</div>
+
+										<div class="form-group" id="other_address">
+											<label for="inputPassword3"
+												class="col-sm-3 control-label pt-10">Address</label>
+											<div class="col-sm-9">
+												<textarea class="form-control input-sm" rows="3" id="other_adrs" name="address"
+													placeholder="Enter address"></textarea>
+											</div>
+										</div>
+
+										<div class="form-group" id="other_purpose">
+											<label for="inputPassword3" class="col-sm-3 control-label pt-10">Purpose</label>
+											<div class="col-sm-9">
+												<input type="text" class="form-control" name="purpose" id="other_prps" placeholder="Enter purpose">
+											</div>
+										</div>
+										<!-- fields ends for 'Others' visitor category -->
+
+										<div class="form-group" id="aff_member_name">
+											<label for="inputPassword3" class="col-sm-3 control-label pt-10">Member
+												Name</label>
+											<div class="col-sm-9">
+												<input type="text" class="form-control" name="name" placeholder="Enter affiliated member name">
+											</div>
+										</div>
+
+										<!-- <div class="input-group">
+											<label for="inputPassword3" class="col-sm-3 control-label pt-10">Phone</label>
+											<input type="number" class="form-control" name="name" placeholder="Enter phone number">
+											<span class="input-group-addon"><i class="fa fa-check"></i></span>
+										</div> -->
+
+											<div class="form-group" id="member_staff_dropdown">
+												<label for="inputPassword3"
+													class="col-sm-3 control-label">Member</label>
+												<div class="col-sm-9" id="selectbox">
+													<select class="form-control select2" name="_id" id="_id"
+														style="width: 100%;">
+														<option value="" disabled="" selected="true">- - - Select - - -
+														</option>
+														<% member_staffs.forEach((value,index)=>{ %>
+															<option
+																value="<%= value['member_staff_id']+' '+ value['_id']+' '+value['is_active']+' '+value['mobile']+' '+value['name'] %>">
+																<%= value['name']+' - '+value['member_staff_id'] %>
+															</option>
+															<% }) %>
+													</select>
+												</div>
+											</div>
+
+										<div class="form-group" id="member_staff_id_input">
+											<label for="inputPassword3" class="col-sm-3 control-label pt-10">Membership
+												No</label>
+											<div class="col-sm-9">
+												<input type="text" class="form-control" name="member_staff_id"
+													id="member_staff_id" placeholder="Membership no" readonly="">
+											</div>
+										</div>
+
+										<div class="form-group" id="club">
+											<label for="inputPassword3" class="col-sm-3 control-label pt-10">Club</label>
+											<div class="col-sm-9">
+												<input type="text" class="form-control" name="club" placeholder="Enter affiliated club">
+											</div>
+										</div>
+
+										<div class="form-group" id="relatives">
+											<label for="inputPassword3" class="col-sm-3 control-label">No. Of
+												Person</label>
+											<div class="col-sm-3">
+												<input type="number" class="form-control" value="1" name="self" id="self"
+													placeholder="self" readonly>
+											</div>
+											<div class="col-sm-3">
+												<input type="number" class="form-control" name="spouse" id="spouse"
+													placeholder="spouse">
+											</div>
+											<div class="col-sm-3">
+												<input type="number" class="form-control" name="children" id="children"
+													placeholder="children">
+											</div>
+										</div>
+
+										<div class="form-group visit_place">
+											<label for="inputPassword3" class="col-sm-3 control-label pt-10">Visit
+												Place</label>
+											<div class="col-sm-9">
+												<select class="form-control select2" name="visit_place" id="visit_place"
+													style="width: 100%;">
+													<option value="" disabled="" selected="">- - - Select - - -</option>
+													<% places.forEach((visit,index)=>{ %>
+													     <option value="<%= visit['place'] %>"><%= visit['place'] %></option>
+													<% }) %>
+												</select>
+											</div>
+										</div>
+
+										<div class="form-group" id="relationWithMember">
+											<label for="inputPassword3" class="col-sm-3 control-label pt-10">Relation With Member</label>
+											<div class="col-sm-9">
+												<input type="text" class="form-control" name="relationWithMember" placeholder="Enter relation with member">
+											</div>
+										</div>
+
+										<div class="form-group" id="relativeName">
+											<label for="inputPassword3" class="col-sm-3 control-label pt-10">Relative name</label>
+											<div class="col-sm-9">
+												<input type="text" class="form-control" name="relativeName" placeholder="Enter relative name">
+											</div>
+										</div>
+
+										<div class="form-group" id="relativePhone">
+											<label for="inputPassword3" class="col-sm-3 control-label pt-10">Relative Mobile</label>
+											<div class="col-sm-9">
+												<input type="number" class="form-control" name="relativePhone" placeholder="Enter relative mobile number">
+											</div>
+										</div>
+
+										<div class="form-group remarks">
+											<label for="inputPassword3"
+												class="col-sm-3 control-label pt-10">Remarks</label>
+											<div class="col-sm-9">
+												<textarea class="form-control input-sm" rows="3" name="remarks" id="remarks"
+													placeholder="Enter remarks (if any)"></textarea>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label for="inputPassword3" class="col-sm-3 control-label pt-10">Image
+												Preview</label>
+											<div class="col-sm-9">
+												<div class="">
+													<img id="uploaded_image" src="/assets/images/avatar.png"
+														class="profile-user-img img-responsive img-circle img-lg"
+														alt="Member Image">
+												</div>
+											</div>
+										</div>
+
+										<div class="form-group">
+											<label for="inputPassword3" class="col-sm-3 control-label pt-10">Visitor
+												Image</label>
+											<div class="col-sm-9">
+												<input type="file" onchange="readURL(this);"
+													style="background-color: lavender;" class="form-control"
+													name="image" id="image">
+											</div>
+										</div>
+
+									</div>
+								</div>
+
+								<div class="col-md-5 no-padding" id="guest_entry">
+									<div class="box-header">
+										<h3 class="box-title" style="color: grey;"><i style="color: #3c8dbc"
+												class="fa fa-users text-sm"></i>&nbsp;&nbsp;Guest Information</h3>
+									</div>
+									<div class="box-body table-responsive" style="padding: 4px;">
+										<table class="table table-bordered table-striped">
+											<thead>
+												<tr class="text-sm">
+													<th width="30%">Name</th>
+													<th width="45%">Address</th>
+													<th width="18%">Mobile</th>
+													<th width="7%">Action</th>
+												</tr>
+											</thead>
+											<tbody id="cart-item-holder">
+												<tr>
+													<td><input type="text" class="form-control input-sm"
+															name="guest_name" id="guest_name" placeholder="Enter name">
+													</td>
+													<td><input type="text" class="form-control input-sm"
+															name="guest_address" id="guest_address"
+															placeholder="Enter address"></td>
+													<td><input type="number" class="form-control input-sm"
+															name="guest_mobile" id="guest_mobile"
+															placeholder="Enter mobile"></td>
+													<td class="text-center"><a id="add_guest"
+															class='btn-primary btn btn-rounded' style='padding:0px 4px;'
+															href='#'><i class='glyphicon glyphicon-plus'></i></a></td>
+												</tr>
+
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="box-body table-responsive">
+									<table class="table table-bordered text-center table-striped" width="100%">
+										<thead>
+											<tr class="text-sm">
+												<th>Membership/Staff Id</th>
+												<th>Membership Status</th>
+												<th>Member/Staff Mobile</th>
+												<th>Meeting Status</th>
+											</tr>
+										</thead>
+										<tbody id="member-availability-table">
+
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+
+				<div class="modal-footer">
+					<!-- <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button> -->
+					<button type="submit" class="btn btn-primary">Save</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</form>

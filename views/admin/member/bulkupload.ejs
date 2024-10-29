@@ -1,0 +1,101 @@
+<style type="text/css">
+    .box-body {
+        background-color: white;
+    }
+
+    .box-title {
+        color: white;
+    }
+
+    .box-header {
+        background-color: #105e7d;
+    }
+</style>
+
+<body>
+
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <div class="box-body" style="padding: 4px;">
+                    <form method="post" id="add_member_form" enctype="multipart/form-data" autocomplete="off">
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-3 control-label pt-10">Upload File</label>
+                            <div class="col-sm-9">
+                                <input type="file" style="background-color: lavender;"
+                                    class="form-control" name="image" id="image">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+    <!-- /.content -->
+    <div class="clearfix"></div>
+</body>
+<script type="text/javascript">
+    $.ajaxSetup({
+        headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+    });
+    $("#add_member_form").submit(function (e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        var url= '/admin/member/bulk-upload';
+        var method= 'POST';
+        
+        $.ajax({
+            url: url,
+            method: method,
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                console.log(response);
+                if (response['statuscode'] === 422) {
+                    var err_msg = '';
+                    response['errors'].forEach((error, index) => {
+                        err_msg += error['msg'] + '\n';
+                    });
+                    swal({
+                        title: response['msg'],
+                        text: err_msg,
+                        closeOnClickOutside: false,
+                        button: 'OK'
+                    }).then(() => { });
+                } else if (response['statuscode'] === 200) {
+                    $('#add_visitor_modal').modal('hide');
+                    swal({
+                        title: response['msg'],
+                        closeOnClickOutside: false,
+                        button: 'OK'
+                    }).then(() => {
+                        window.location.href = window.location.href.replace(/#.*$/, '');
+                        // $('#visitor_datatable').DataTable().ajax.reload();
+                        // $('#add_visitor_form')[0].reset();
+                        // $("#member-availability-table").find(".member-availability").remove();
+                        // build_guest_array(populate_guest = []);
+                        // $('.visit_place').hide();
+                    });
+                }
+            },
+            error: function (error) {
+                console.log(error);
+                swal({
+                    title: "Access Denied. Please contact with Administrator !",
+                    icon: "error",
+                    closeOnClickOutside: false,
+                    button: "OK!",
+                    className: "myClass",
+                }).then(() => {
+                    // $('#visitor_datatable').DataTable().ajax.reload();
+                });
+            }
+        });
+    });
+</script>
